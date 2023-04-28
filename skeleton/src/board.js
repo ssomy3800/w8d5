@@ -44,7 +44,7 @@ Board.DIRS = [
 Board.prototype.isValidPos = function (pos) {
   let x = pos[0];
   let y = pos[1];
-  if (x < 7 && x > 0 && y < 7 && y > 0) {
+  if (x <= 7 && x >= 0 && y <= 7 && y >= 0) {
     return true;
   } else {
     return false;
@@ -55,13 +55,13 @@ Board.prototype.isValidPos = function (pos) {
  * throwing an Error if the position is invalid.
  */
 Board.prototype.getPiece = function (pos) {
+  if (!this.isValidPos(pos)) {
+    throw new Error("Not valid pos!");
+  }
   let x = pos[0];
   let y = pos[1];
   if (this.grid[x][y] instanceof Piece) {
     return this.grid[x][y];
-  } else if (!this.isValidPos(pos)) {
-    throw "Not valid pos!";
-  } else {
   }
 };
 
@@ -69,12 +69,31 @@ Board.prototype.getPiece = function (pos) {
  * Checks if the piece at a given position
  * matches a given color.
  */
-Board.prototype.isMine = function (pos, color) {};
+Board.prototype.isMine = function (pos, color) {
+  let x = pos[0];
+  let y = pos[1];
+  let piece = this.grid[x][y]
+  if (piece === undefined) {
+    return piece
+  }
+  if (piece.color === color) {
+    return true
+  } else {
+    return false
+  }
+};
 
 /**
  * Checks if a given position has a piece on it.
  */
-Board.prototype.isOccupied = function (pos) {};
+Board.prototype.isOccupied = function (pos) {
+
+  if (this.getPiece(pos) instanceof Piece) {
+    return true 
+  } else {
+    return false
+  }
+};
 
 /**
  * Recursively follows a direction away from a starting position, adding each
@@ -89,7 +108,33 @@ Board.prototype.isOccupied = function (pos) {};
  *
  * Returns empty array if no pieces of the opposite color are found.
  */
-Board.prototype._positionsToFlip = function (pos, color, dir, piecesToFlip) {};
+Board.prototype._positionsToFlip = function (pos, color, dir, piecesToFlip) {
+  let x = pos[0];
+  let y = pos[1];
+  let dx = dir[0];
+  let dy = dir[1]
+  let piece = this.grid[x][y]
+  //[0,-1] dir
+  
+  if (this.grid[x += dx][y += dy].color !== color) {
+    piecesToFlip.push(this.grid[x += dx][y += dy])
+  }
+
+
+
+  // this.grid[x][y].color !== piece.color
+
+  // piecesToFlip = flip
+
+  // if (this.isOccupied === false) {
+  //   return flip
+  // }
+  // if (this.isValidPos === false) {
+  //   return flip 
+  // }
+
+
+};
 
 /**
  * Checks that a position is not already occupied and that the color
