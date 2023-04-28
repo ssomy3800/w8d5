@@ -72,14 +72,14 @@ Board.prototype.getPiece = function (pos) {
 Board.prototype.isMine = function (pos, color) {
   let x = pos[0];
   let y = pos[1];
-  let piece = this.grid[x][y]
+  let piece = this.grid[x][y];
   if (piece === undefined) {
-    return piece
+    return piece;
   }
   if (piece.color === color) {
-    return true
+    return true;
   } else {
-    return false
+    return false;
   }
 };
 
@@ -87,11 +87,10 @@ Board.prototype.isMine = function (pos, color) {
  * Checks if a given position has a piece on it.
  */
 Board.prototype.isOccupied = function (pos) {
-
   if (this.getPiece(pos) instanceof Piece) {
-    return true 
+    return true;
   } else {
-    return false
+    return false;
   }
 };
 
@@ -111,29 +110,29 @@ Board.prototype.isOccupied = function (pos) {
 Board.prototype._positionsToFlip = function (pos, color, dir, piecesToFlip) {
   let x = pos[0];
   let y = pos[1];
-  let dx = dir[0];
-  let dy = dir[1]
-  let piece = this.grid[x][y]
-  //[0,-1] dir
-  
-  if (this.grid[x += dx][y += dy].color !== color) {
-    piecesToFlip.push(this.grid[x += dx][y += dy])
+  let dx = x + dir[0];
+  let dy = y + dir[1];
+
+  if (this.isValidPos([dx, dy]) === false) {
+    return [];
+  } else if (this.isOccupied([dx, dy]) === false) {
+    return [];
   }
+  let piece = this.getPiece([dx, dy]);
+  if (piece.color === color) {
+    return [];
+  }
+  // else if(piece.color === color)
 
+  // //[0,-1] dir
+  // return piece;
+  // if (piece.color === color) {
+  //   return 1;
+  // }
 
-
-  // this.grid[x][y].color !== piece.color
-
+  //
+  // piecesToFlip.push(this.grid[x += dx][y += dy])
   // piecesToFlip = flip
-
-  // if (this.isOccupied === false) {
-  //   return flip
-  // }
-  // if (this.isValidPos === false) {
-  //   return flip 
-  // }
-
-
 };
 
 /**
